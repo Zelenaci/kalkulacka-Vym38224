@@ -1,9 +1,25 @@
-#!/usr/bin/env python3
-# Soubor:  kalkulacka.py
-# Datum:   28.03.2022 08:31
-# Autor:   Marek Nožka, nozka <@t> spseol <d.t> cz
-############################################################################
+
 import math
+import tkinter as tk
+
+from os.path import basename, splitext
+
+
+class Application(tk.Tk):
+    name = basename(splitext(basename(__file__.capitalize()))[0])
+    name = "Foo"
+
+    def __init__(self):
+        super().__init__(className=self.name)
+        self.title(self.name)
+        self.bind("<Escape>", self.quit)
+        self.lbl = tk.Label(self, text="Kalkulačka")
+        self.lbl.pack()
+        self.btn = tk.Button(self, text="Konec", command=self.quit)
+        self.btn.pack()
+        
+
+
 
 zasobnik = []
 
@@ -90,3 +106,12 @@ def zpracuj(radek):
 while True:
     radek = input(zasobnik.__repr__() + ">>> ")
     zpracuj(radek)
+
+
+
+    def quit(self, event=None):
+        super().quit()
+
+
+app = Application()
+app.mainloop()
