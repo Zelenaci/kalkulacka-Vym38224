@@ -30,7 +30,7 @@ class Application(tk.Tk):
         self.expression = ""
         self.zasobnik = []
         self.equation = StringVar()
-        self.geometry("400x300")
+        self.geometry("370x370")
         self.bind("<Escape>", self.quit)
         self.lbl = tk.Label(self, text="Kalkulačka")
         self.lbl.grid(row = 1,column=3)
@@ -80,8 +80,9 @@ class Application(tk.Tk):
         self.cos.grid(row=3, column=5)
         self.tan = Button(self, text='tan', command=lambda: self.press("tan"), height=1, width=7)
         self.tan.grid(row=3, column=6)
-        self.pi = Button(self, text='π', command=lambda: self.press(3,14), height=1, width=7)
+        self.pi = Button(self, text='π', command=lambda: self.press(3.141592653589793), height=1, width=7)
         self.pi.grid(row=4, column=6)
+       
         
 
         self.entry = Entry(self, textvariable=self.equation)
@@ -96,17 +97,18 @@ class Application(tk.Tk):
 
     def equalpress(self):
         try:
-            
             total = str(eval(self.expression))
             self.equation.set(total)
             self.expression = ""
- 
+    
         except:
             self.equation.set(" error ")
             self.expression = ""
 
     def clear(self):
         self.listBox.delete(0,tk.END)
+        self.expression = ""
+        self.equation.set("")
 
     def fce(self):
         self.zpracuj(self.entry.get())
@@ -135,13 +137,13 @@ class Application(tk.Tk):
                     a = self.zasobnik.pop()
                     self.zasobnik.append(dva_operandy[token](a, b))
                 else:
-                    print("Nemám dost operandů!!!")
+                    print("Nemám dostatek operadnů!")
             if token in jeden_operand.keys():
                 if len(self.zasobnik) >= 1:
                     a = self.zasobnik.pop()
                     self.zasobnik.append(jeden_operand[token](a))
                 else:
-                    print("Nemám dost operandů!!!")
+                    print("Nemám dostatek operadnů!")
             self.listBox.delete(0,tk.END)
             for token in self.zasobnik:
                 self.listBox.insert(tk.END,token)
@@ -153,11 +155,6 @@ class Application(tk.Tk):
             self.listBox.insert(tk.END,token)
         except ValueError:
             self.operace(self,token)
-
-
-
-
-    
 
 
 app = Application()
