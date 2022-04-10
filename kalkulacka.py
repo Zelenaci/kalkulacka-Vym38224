@@ -30,14 +30,14 @@ class Application(tk.Tk):
         self.expression = ""
         self.zasobnik = []
         self.equation = StringVar()
-        self.geometry("370x370")
+        self.geometry("357x350")
         self.bind("<Escape>", self.quit)
         self.lbl = tk.Label(self, text="Kalkulačka")
         self.lbl.grid(row = 1,column=3)
         self.btn = tk.Button(self, text = "Konec",bg="pink", command = self.quit, height=1, width=7)
         self.btn.grid(row = 5, column = 6)
         self.btnz = tk.Button(self, text="Zapsat",bg="green", command=self.fce, height=1, width=7)
-        self.btnz.grid(row=2, column=6)
+        self.btnz.grid(row=4, column=6)
         self.btn1 = Button(self, text=' 1 ', command=lambda: self.press(1), height=1, width=7)
         self.btn1.grid(row = 2, column = 1)
         self.btn2 = Button(self, text=' 2 ', command=lambda: self.press(2), height=1, width=7)
@@ -79,9 +79,9 @@ class Application(tk.Tk):
         self.cos = Button(self, text='cos', command=lambda: self.press("cos"), height=1, width=7)
         self.cos.grid(row=3, column=5)
         self.tan = Button(self, text='tan', command=lambda: self.press("tan"), height=1, width=7)
-        self.tan.grid(row=3, column=6)
+        self.tan.grid(row=2, column=6)
         self.pi = Button(self, text='π', command=lambda: self.press(3.141592653589793), height=1, width=7)
-        self.pi.grid(row=4, column=6)
+        self.pi.grid(row=3, column=6)
        
         
 
@@ -114,8 +114,7 @@ class Application(tk.Tk):
         self.zpracuj(self.entry.get())
         self.expression = ""
         self.equation.set("")
-
-
+        
     def quit(self, event = None):
         super().quit()
 
