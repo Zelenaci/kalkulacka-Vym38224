@@ -30,10 +30,10 @@ class Application(tk.Tk):
         self.expression = ""
         self.zasobnik = []
         self.equation = StringVar()
-        self.geometry("357x350")
+        self.geometry("416x377")
         self.bind("<Escape>", self.quit)
-        self.lbl = tk.Label(self, text="Kalkulačka")
-        self.lbl.grid(row = 1,column=3)
+        self.lbl = tk.Label(self, text="Kalkulačka", fg="dark blue")
+        self.lbl.grid(row = 1,column=4)
         self.btn = tk.Button(self, text = "Konec",bg="pink", command = self.quit, height=1, width=7)
         self.btn.grid(row = 5, column = 6)
         self.btnz = tk.Button(self, text="Zapsat",bg="green", command=self.fce, height=1, width=7)
@@ -82,14 +82,20 @@ class Application(tk.Tk):
         self.tan.grid(row=2, column=6)
         self.pi = Button(self, text='π', command=lambda: self.press(3.141592653589793), height=1, width=7)
         self.pi.grid(row=3, column=6)
+        self.btnup = Button(self, text = "↑", command=self.up, height=1, width=7 )
+        self.btnup.grid(row = 10, column = 7)
+        self.btndown = Button(self, text = "↓", command=self.down, height=1, width=7)
+        self.btndown.grid(row = 11, column = 7)
        
         
+        self.frame = Frame(self)
+        self.frame.grid(row = 11, column = 7)
 
-        self.entry = Entry(self, textvariable=self.equation)
+        self.entry = Entry(self, textvariable=self.equation, width=40)
         self.entry.grid(rowspan = 10, columnspan = 7)
         
-        self.listBox = tk.Listbox(self)
-        self.listBox.grid(rowspan = 11, columnspan = 7)
+        self.listbox = tk.Listbox(self, width=40)
+        self.listbox.grid(rowspan = 11, columnspan = 7)
 
     def press(self, num):   
         self.expression = self.expression + str(num)
@@ -106,7 +112,7 @@ class Application(tk.Tk):
             self.expression = ""
 
     def clear(self):
-        self.listBox.delete(0,tk.END)
+        self.listbox.delete(0,tk.END)
         self.expression = ""
         self.equation.set("")
 
@@ -114,6 +120,33 @@ class Application(tk.Tk):
         self.zpracuj(self.entry.get())
         self.expression = ""
         self.equation.set("")
+    
+    def listbox_reload(self):
+        self.listbox.delete(0, END)
+        for item in self.zasobnik:
+            self.listbox.insert(END, item)
+
+    def up(self, event = None):
+        if self.listbox.get(ACTIVE) != "":
+            item = self.listbox.curselection()[0]
+            self.zasobnik[item], self.zasobnik[item - 1] = self.zasobnik[item - 1], self.zasobnik[item]
+            self.listbox_reload()
+          
+            self.listbox.selection_set(item - 1)
+            self.listbox.activate(item - 1)
+        else:
+            pass
+
+    def down(self, event = None):
+        if self.listbox.get(ACTIVE) != "":
+            item = self.listbox.curselection()[0]
+            self.zasobnik[item], self.zasobnik[item + 1] = self.zasobnik[item + 1], self.zasobnik[item]
+            self.listbox_reload()
+          
+            self.listbox.selection_set(item + 1)
+            self.listbox.activate(item + 1)          
+        else:
+            pass
         
     def quit(self, event = None):
         super().quit()
@@ -126,8 +159,8 @@ class Application(tk.Tk):
             if token.upper() == "PI":
                 self.zasobnik.append(math.pi)
             if token.upper() == "SW":
-                a =  self.listBox.get(tk.END)
-                b =  self.listBox.get(tk.END-1)
+                a =  self.listbox.get(tk.END)
+                b =  self.listbox.get(tk.END-1)
                 self.zasobnik.append(b)
                 self.zasobnik.append(a)
             if token in dva_operandy.keys():
@@ -143,15 +176,15 @@ class Application(tk.Tk):
                     self.zasobnik.append(jeden_operand[token](a))
                 else:
                     print("Nemám dostatek operadnů!")
-            self.listBox.delete(0,tk.END)
+            self.listbox.delete(0,tk.END)
             for token in self.zasobnik:
-                self.listBox.insert(tk.END,token)
+                self.listbox.insert(tk.END,token)
 
 
     def zpracuj(self, token, event=None):
         try:
             self.zasobnik.append(float(token))
-            self.listBox.insert(tk.END,token)
+            self.listbox.insert(tk.END,token)
         except ValueError:
             self.operace(self,token)
 
